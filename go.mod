@@ -11,3 +11,5 @@ require (
 )
 
 go 1.14
+
+replace github.com/google/go-containerregistry => /Users/dan/workspace/google/go-containerregistry

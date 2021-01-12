@@ -2,8 +2,11 @@ package remote
 
 import (
 	"fmt"
+	"github.com/google/go-containerregistry/pkg/logs"
 	"io"
+	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -499,6 +502,15 @@ func (i *Image) Save(additionalNames ...string) error {
 }
 
 func (i *Image) doSave(imageName string) error {
+
+	// lets create a custom roundTripper that logs requests and responses to some file
+	logs.Warn = log.New(os.Stdout, "Transport Warn: ", log.LstdFlags)
+
+	// Progress is used to log notable, successful events.
+	//logs.Progress = log.New(os.Stdout, "Transport Progress: ", log.LstdFlags)
+
+	// Debug is used to log information that is useful for debugging.
+	//logs.Debug = log.New(os.Stdout, "Transport Debug: ", log.LstdFlags)
 	ref, auth, err := referenceForRepoName(i.keychain, imageName)
 	if err != nil {
 		return err
